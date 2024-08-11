@@ -1,9 +1,11 @@
 package org.app.service;
 
 import org.app.model.Note;
+import org.app.model.dto.NoteDto;
 import org.app.repository.NoteRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -15,7 +17,7 @@ public class NoteService {
 
     private final NoteRepository repo;
 
-    public Iterable<Note> listAll() {
+    public List<Note> listAll() {
         return repo.findAll();
     }
 
@@ -27,13 +29,13 @@ public class NoteService {
         repo.deleteById(id);
     }
 
-    public Note update(Long id, String title, String content) throws Exception {
+    public Note update(Long id, NoteDto noteDto) throws Exception {
         if (Objects.isNull(getById(id))) {
-            throw new Exception("Note not found");
+            throw new IllegalArgumentException("Note not found");
         }
         Note note = repo.getById(id);
-        note.setTitle(title);
-        note.setContent(content);
+        note.setTitle(noteDto.getTitle());
+        note.setContent(noteDto.getContent());
         return repo.save(note);
 
     }

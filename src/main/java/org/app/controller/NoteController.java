@@ -4,11 +4,13 @@ package org.app.controller;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.app.model.Note;
+import org.app.model.dto.NoteDto;
 import org.app.service.NoteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -20,7 +22,7 @@ public class NoteController {
 
 
     @GetMapping(value = "/list")
-    public Iterable<Note> getList(){
+    public List<Note> getList(){
         return noteService.listAll();
     }
 
@@ -36,9 +38,9 @@ public class NoteController {
     }
 
     @PutMapping("/{id}")
-    public Note editNote(@PathVariable Long id, @RequestBody Map<String, String> json, HttpServletResponse httpServletResponse) throws Exception {
+    public Note editNote(@PathVariable Long id, @RequestBody NoteDto noteDto, HttpServletResponse httpServletResponse) throws Exception {
        ;
-        return noteService.update(id,  json.get("title"), json.get("content"));
+        return noteService.update(id,  noteDto);
     }
 
     @DeleteMapping("/{id}")
